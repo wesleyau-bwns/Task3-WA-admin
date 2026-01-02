@@ -1,8 +1,8 @@
 import axios from "axios";
 import { getDeviceId } from "../utils/device";
 
-const rawApi = axios.create({
-  baseURL: "https://developers.minxpay.com/ws6/BPSP-DEMO/backend/public",
+const publicApi = axios.create({
+  baseURL: "https://bpsp-api-admin.bw-group.cc/v1",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -10,9 +10,9 @@ const rawApi = axios.create({
   withCredentials: true, // IMPORTANT for refresh cookie
 });
 
-rawApi.interceptors.request.use((config) => {
+publicApi.interceptors.request.use((config) => {
   config.headers["X-Device-Id"] = getDeviceId();
   return config;
 });
 
-export default rawApi;
+export default publicApi;

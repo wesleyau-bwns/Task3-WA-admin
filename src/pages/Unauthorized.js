@@ -35,7 +35,7 @@ export default function Unauthorized() {
           <Button variant="contained" onClick={() => navigate(-1)}>
             Go Back
           </Button>
-          <Button variant="outlined" onClick={() => navigate("/")}>
+          <Button variant="outlined" onClick={() => navigate("/dashboard")}>
             Go to Home
           </Button>
         </Box>

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import api from "../api/axios";
+import protectedApi from "../api/protectedApi";
 
 const AuthContext = createContext();
 
@@ -10,8 +10,8 @@ export const AuthProvider = ({ children }) => {
   const fetchUser = async () => {
     setLoading(true);
     try {
-      const res = await api.get("/api/auth/user");
-      setUser(res.data.user);
+      const res = await protectedApi.get("/auth/admin");
+      setUser(res.data.admin);
     } catch (error) {
       setUser(null);
     } finally {

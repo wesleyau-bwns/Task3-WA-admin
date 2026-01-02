@@ -8,29 +8,34 @@ import Stack from "@mui/material/Stack";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import { logout } from "../utils/logout";
+import { useLogout } from "../utils/useLogout";
 import { useAuth } from "../contexts/AuthContext";
 import { ALL_PAGES } from "../constants/pages";
 
 export default function MenuContent() {
   const location = useLocation();
   const { user } = useAuth();
+  const logout = useLogout();
 
   // Filter pages based on user permissions
-  const accessiblePages = ALL_PAGES.filter((page) =>
-    page.allowedPermissions.some((permission) =>
-      user?.permissions?.includes(permission)
-    )
+  const accessiblePages = ALL_PAGES.filter(
+    (page) =>
+      !page.allowedPermissions.length || // no permissions required
+      page.allowedPermissions.some((permission) =>
+        user?.permissions?.includes(permission)
+      )
   );
+
+  const menuPages = accessiblePages.filter((page) => page.showInMenuContent);
 
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: "space-between" }}>
       {/* Main menu */}
       <List dense>
-        {accessiblePages.map((page) => {
-          const pagePath = page.path ? `/dashboard/${page.path}` : "/dashboard";
+        {menuPages.map((page) => {
+          const pagePath = `/${page.path}`;
           return (
-            <ListItem key={page.path || "dashboard"} disablePadding>
+            <ListItem key={page.path} disablePadding>
               <ListItemButton
                 component={NavLink}
                 to={pagePath}

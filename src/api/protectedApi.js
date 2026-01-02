@@ -6,8 +6,8 @@ import {
 } from "../utils/tokenService";
 import { refreshToken } from "./endpoints/auth";
 
-const api = axios.create({
-  baseURL: "https://developers.minxpay.com/ws6/BPSP-DEMO/backend/public",
+const protectedApi = axios.create({
+  baseURL: "https://bpsp-api-admin.bw-group.cc/v1",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -16,11 +16,11 @@ const api = axios.create({
 });
 
 // REQUEST interceptor
-api.interceptors.request.use(async (config) => {
+protectedApi.interceptors.request.use(async (config) => {
   // Skip auth endpoints
   if (
-    config.url.includes("/api/auth/login") ||
-    config.url.includes("/api/auth/refresh")
+    config.url.includes("/auth/login") ||
+    config.url.includes("/auth/refresh")
   ) {
     return config;
   }
@@ -33,8 +33,8 @@ api.interceptors.request.use(async (config) => {
       const data = await refreshToken();
       token = data.access_token;
     } catch (err) {
-      clearTokens();
-      window.location.href = process.env.PUBLIC_URL || "/";
+      // clearTokens();
+      window.location.href = `${window.location.origin}/login`;
       return Promise.reject(err);
     }
   }
@@ -47,15 +47,15 @@ api.interceptors.request.use(async (config) => {
 });
 
 // RESPONSE interceptor
-api.interceptors.response.use(
+protectedApi.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       clearTokens();
-      window.location.href = process.env.PUBLIC_URL || "/";
+      window.location.href = `${window.location.origin}/login`;
     }
     return Promise.reject(error);
   }
 );
 
-export default api;
+export default protectedApi;

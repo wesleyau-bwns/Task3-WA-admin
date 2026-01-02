@@ -1,31 +1,19 @@
-import Landing from "../pages/Landing";
-import User from "../panels/user/pages/User";
-import Admin from "../panels/admin/pages/Admin";
-import Merchant from "../panels/merchant/pages/Merchant";
+import Dashboard from "../pages/dashboard/index";
+import UserManagement from "../pages/users/index";
 
 export const ALL_PAGES = [
   {
-    path: "", // renders at /dashboard (index route)
+    path: "dashboard", // renders at /dashboard
     label: "Dashboard",
-    component: Landing,
-    allowedPermissions: ["view-dashboard"],
+    component: Dashboard,
+    allowedPermissions: [],
+    showInMenuContent: true,
   },
   {
-    path: "admin", // renders at /dashboard/admin
-    label: "Admin Panel",
-    component: Admin,
-    allowedPermissions: ["view-admin-page"],
-  },
-  {
-    path: "user",
-    label: "User Panel",
-    component: User,
-    allowedPermissions: ["view-user-page"],
-  },
-  {
-    path: "merchant",
-    label: "Merchant Panel",
-    component: Merchant,
-    allowedPermissions: ["view-merchant-page"],
+    path: "users", // renders at /users
+    label: "User Management",
+    component: UserManagement,
+    allowedPermissions: [],
+    showInMenuContent: true,
   },
 ];

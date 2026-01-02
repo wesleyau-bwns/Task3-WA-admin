@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Breadcrumbs, { breadcrumbsClasses } from "@mui/material/Breadcrumbs";
@@ -19,24 +19,31 @@ export default function NavbarBreadcrumbs() {
   const { pathname } = useLocation();
 
   const segments = pathname.split("/").filter(Boolean);
-  const lastSegment = segments.length > 0 ? segments[segments.length - 1] : "";
 
-  const label = lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
+  const formatLabel = (segment) =>
+    segment.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 
-  if (lastSegment.toLowerCase() === "dashboard") {
-    return (
-      <StyledBreadcrumbs
-        separator={<NavigateNextRoundedIcon fontSize="small" />}
-      >
-        <Typography sx={{ fontWeight: 600 }}>Dashboard</Typography>
-      </StyledBreadcrumbs>
-    );
-  }
+  const buildPath = (index) => "/" + segments.slice(0, index + 1).join("/");
 
   return (
     <StyledBreadcrumbs separator={<NavigateNextRoundedIcon fontSize="small" />}>
-      <Typography variant="body1">Dashboard</Typography>
-      <Typography sx={{ fontWeight: 600 }}>{label}</Typography>
+      {segments.map((segment, index) => {
+        const isLast = index === segments.length - 1;
+
+        return isLast ? (
+          <Typography key={segment} sx={{ fontWeight: 600 }}>
+            {formatLabel(segment)}
+          </Typography>
+        ) : (
+          <Link
+            key={segment}
+            to={buildPath(index)}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Typography>{formatLabel(segment)}</Typography>
+          </Link>
+        );
+      })}
     </StyledBreadcrumbs>
   );
 }

@@ -1,9 +1,9 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /ws6/BPSP-DEMO/frontend/build/
+    RewriteBase "/"
 
     RewriteRule ^index\.html$ - [L]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule . /ws6/BPSP-DEMO/frontend/build/index.html [L]
+    RewriteRule . index.html [L]
 </IfModule>

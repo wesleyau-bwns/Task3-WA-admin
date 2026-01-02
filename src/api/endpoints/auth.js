@@ -1,9 +1,10 @@
-import rawApi from "../rawAxios";
+import protectedApi from "../protectedApi";
+import publicApi from "../publicApi";
 import { setAccessToken, clearTokens } from "../../utils/tokenService";
 
 export const refreshToken = async () => {
   try {
-    const response = await rawApi.post("/api/auth/refresh");
+    const response = await publicApi.post("/auth/refresh");
     const data = response.data;
 
     // data must contain: access_token, expires_in
@@ -17,5 +18,5 @@ export const refreshToken = async () => {
 };
 
 export const logoutRequest = async () => {
-  return rawApi.post("/api/auth/logout");
+  return protectedApi.post("/auth/logout");
 };

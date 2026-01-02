@@ -1,8 +1,8 @@
-import { Outlet } from "react-router-dom";
 import { alpha } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
+
 import Header from "../components/Header";
 import SideMenu from "../components/SideMenu";
 import AppTheme from "../theme/AppTheme";
@@ -21,7 +21,7 @@ const xThemeComponents = {
   ...treeViewCustomizations,
 };
 
-export default function Dashboard(props) {
+export default function MainLayout(props) {
   return (
     <AppTheme {...props} themeComponents={xThemeComponents}>
       <CssBaseline enableColorScheme />
@@ -41,14 +41,14 @@ export default function Dashboard(props) {
             <Header />
             <Stack
               sx={{
-                width: "90%",
+                width: "95%",
                 mx: "auto",
                 pb: 4,
                 mt: 4,
               }}
               spacing={2}
             >
-              <Outlet />
+              {props.children}
             </Stack>
           </>
         </Box>

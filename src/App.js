@@ -1,59 +1,42 @@
-import { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 
+import ProtectedRoute from "./components/ProtectedRoute";
 import SignIn from "./pages/SignIn";
 import UnauthorizedPage from "./pages/Unauthorized";
-import Dashboard from "./layout/Dashboard";
+import MainLayout from "./layouts/MainLayout";
 
-import { refreshToken } from "./api/endpoints/auth";
-import { clearTokens, markAuthReady } from "./utils/tokenService";
 import { ALL_PAGES } from "./constants/pages";
 
 function App() {
-  const [ready, setReady] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    refreshToken()
-      .catch(() => clearTokens())
-      .finally(() => {
-        markAuthReady();
-        setReady(true);
-      });
-  }, []);
-
-  if (!ready) return null;
+    if (window.location.pathname === "/") {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={<SignIn />} />
+      <Route path="/login" element={<SignIn />} />
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
       {/* Protected Routes */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute allowedPermissions={["view-dashboard"]}>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      >
-        {ALL_PAGES.map((page) => {
-          return (
-            <Route
-              key={page.path || "index"}
-              index={!page.path}
-              path={page.path || undefined}
-              element={
-                <ProtectedRoute allowedPermissions={page.allowedPermissions}>
-                  <page.component />
-                </ProtectedRoute>
-              }
-            />
-          );
-        })}
-      </Route>
+      {ALL_PAGES.map((page) => (
+        <Route
+          key={page.path || "index"}
+          path={`/${page.path}`}
+          element={
+            <ProtectedRoute allowedPermissions={page.allowedPermissions}>
+              <MainLayout>
+                <page.component />
+              </MainLayout>
+            </ProtectedRoute>
+          }
+        />
+      ))}
     </Routes>
   );
 }
