@@ -8,7 +8,7 @@ import Stack from "@mui/material/Stack";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoutIcon from "@mui/icons-material/Logout";
 
-import { useLogout } from "../utils/useLogout";
+import { useLogout } from "../services/logoutService";
 import { useAuth } from "../contexts/AuthContext";
 import { ALL_PAGES } from "../constants/pages";
 

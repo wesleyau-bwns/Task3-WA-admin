@@ -3,7 +3,7 @@ import {
   getAccessToken,
   isTokenExpired,
   clearTokens,
-} from "../utils/tokenService";
+} from "../services/tokenService";
 import { refreshToken } from "./endpoints/auth";
 
 const protectedApi = axios.create({
@@ -33,7 +33,7 @@ protectedApi.interceptors.request.use(async (config) => {
       const data = await refreshToken();
       token = data.access_token;
     } catch (err) {
-      // clearTokens();
+      clearTokens();
       window.location.href = `${window.location.origin}/login`;
       return Promise.reject(err);
     }

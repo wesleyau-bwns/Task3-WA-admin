@@ -1,20 +1,33 @@
 import protectedApi from "../protectedApi";
 import publicApi from "../publicApi";
-import { setAccessToken, clearTokens } from "../../utils/tokenService";
+import { setAccessToken } from "../../services/tokenService";
 
 export const refreshToken = async () => {
-  try {
-    const response = await publicApi.post("/auth/refresh");
-    const data = response.data;
+  const response = await publicApi.post("/auth/refresh");
+  const data = response.data;
 
-    // data must contain: access_token, expires_in
-    setAccessToken(data);
+  // data must contain: access_token, expires_in
+  setAccessToken(data);
 
-    return data;
-  } catch (error) {
-    clearTokens();
-    throw error;
-  }
+  return data;
+};
+
+export const loginRequest = async ({ email, password }) => {
+  const response = await publicApi.post("/auth/login", {
+    email,
+    password,
+  });
+
+  const data = response.data;
+
+  // data must contain: access_token, expires_in
+  setAccessToken(data);
+
+  return data;
+};
+
+export const getAuthenticatedAdmin = async () => {
+  return protectedApi.post("/auth/admin");
 };
 
 export const logoutRequest = async () => {

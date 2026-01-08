@@ -1,4 +1,4 @@
-import Dashboard from "../pages/dashboard/index";
+import Dashboard from "../pages/dashboard/DashboardOverviewPage";
 
 // Users
 import UserListPage from "../pages/users/UserListPage";

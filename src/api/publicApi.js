@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getDeviceId } from "../utils/device";
+import { getDeviceId } from "../utils/deviceUtils";
 
 const publicApi = axios.create({
   baseURL: "https://bpsp-api-admin.bw-group.cc/v1",

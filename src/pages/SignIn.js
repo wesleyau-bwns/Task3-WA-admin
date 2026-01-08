@@ -15,9 +15,8 @@ import { styled } from "@mui/material/styles";
 import AppTheme from "../theme/AppTheme";
 import ColorModeSelect from "../theme/ColorModeSelect";
 
-import publicApi from "../api/publicApi";
 import { useAuth } from "../contexts/AuthContext";
-import { setAccessToken } from "../utils/tokenService";
+import { loginRequest } from "../api/endpoints/auth";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -114,18 +113,9 @@ export default function SignIn(props) {
     const password = data.get("password");
 
     try {
-      const res = await publicApi.post("/auth/login", {
-        email,
-        password,
-      });
+      const data = await loginRequest({ email, password });
 
-      setAccessToken({
-        access_token: res.data.access_token,
-        expires_in: res.data.expires_in,
-      });
-
-      setUser(res.data.admin);
-
+      setUser(data.admin);
       navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Invalid credentials");

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import protectedApi from "../api/protectedApi";
+import { getAuthenticatedAdmin } from "../api/endpoints/auth";
 
 const AuthContext = createContext();
 
@@ -10,8 +10,8 @@ export const AuthProvider = ({ children }) => {
   const fetchUser = async () => {
     setLoading(true);
     try {
-      const res = await protectedApi.get("/auth/admin");
-      setUser(res.data.admin);
+      const data = await getAuthenticatedAdmin();
+      setUser(data.admin);
     } catch (error) {
       setUser(null);
     } finally {

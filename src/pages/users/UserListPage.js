@@ -26,7 +26,8 @@ export default function UserListPage() {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
-  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ export default function UserListPage() {
     setLoading(true);
     try {
       const response = await getUsers({
-        search,
+        search: searchQuery,
         per_page: pageSize,
         page: page + 1,
         sort_by: "created_at",
@@ -50,7 +51,7 @@ export default function UserListPage() {
     } finally {
       setLoading(false);
     }
-  }, [search, page, pageSize]);
+  }, [searchQuery, page, pageSize]);
 
   useEffect(() => {
     fetchUsers();
@@ -142,9 +143,9 @@ export default function UserListPage() {
           <TextField
             size="small"
             placeholder="Search by name"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && fetchUsers()}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && setSearchQuery(searchInput)}
           />
           <Button
             variant="contained"
