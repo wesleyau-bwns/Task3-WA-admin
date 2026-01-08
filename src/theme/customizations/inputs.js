@@ -448,7 +448,7 @@ export const inputsCustomizations = {
         transform: "translate(14px, 12px) scale(1)",
       },
       shrink: {
-        transform: "translate(14px, -12px) scale(0.75)",
+        transform: "translate(14px, -16px) scale(0.75)",
       },
     },
   },

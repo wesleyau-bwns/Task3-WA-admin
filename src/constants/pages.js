@@ -1,5 +1,10 @@
 import Dashboard from "../pages/dashboard/index";
-import UserManagement from "../pages/users/index";
+
+// Users
+import UserListPage from "../pages/users/UserListPage";
+import UserShowPage from "../pages/users/UserShowPage";
+import UserCreatePage from "../pages/users/UserCreatePage";
+import UserEditPage from "../pages/users/UserEditPage";
 
 export const ALL_PAGES = [
   {
@@ -12,8 +17,29 @@ export const ALL_PAGES = [
   {
     path: "users", // renders at /users
     label: "User Management",
-    component: UserManagement,
+    component: UserListPage,
     allowedPermissions: [],
     showInMenuContent: true,
+  },
+  {
+    path: "/users/:id/",
+    label: null,
+    component: UserShowPage,
+    allowedPermissions: [],
+    showInMenuContent: false,
+  },
+  {
+    path: "users/create",
+    label: null,
+    component: UserCreatePage,
+    allowedPermissions: [],
+    showInMenuContent: false,
+  },
+  {
+    path: "/users/:id/edit",
+    label: null,
+    component: UserEditPage,
+    allowedPermissions: [],
+    showInMenuContent: false,
   },
 ];
