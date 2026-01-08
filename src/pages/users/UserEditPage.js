@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import EditIcon from "@mui/icons-material/Edit";
 
 import { getUser, updateUser } from "../../api/endpoints/users";
 
@@ -86,8 +88,15 @@ export default function UserEditPage() {
           helperText={errors.password_confirmation?.[0] || errors.password?.[0]}
         />
 
-        <Box display="flex" justifyContent="flex-end" mt={2}>
-          <Button type="submit" variant="contained">
+        <Box display="flex" justifyContent="space-between" mt={2} width="100%">
+          <Button
+            variant="contained"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate("/users")}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" variant="contained" startIcon={<EditIcon />}>
             Update
           </Button>
         </Box>

@@ -6,7 +6,7 @@ import { toggleButtonClasses } from "@mui/material/ToggleButton";
 import CheckBoxOutlineBlankRoundedIcon from "@mui/icons-material/CheckBoxOutlineBlankRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import RemoveRoundedIcon from "@mui/icons-material/RemoveRounded";
-import { gray, brand } from "../themePrimitives";
+import { gray, orange, red, green, brand } from "../themePrimitives";
 
 /* eslint-disable import/prefer-default-export */
 export const inputsCustomizations = {
@@ -274,6 +274,93 @@ export const inputsCustomizations = {
             style: {
               width: "2.5rem",
               height: "2.5rem",
+            },
+          },
+          {
+            props: {
+              color: "success",
+            },
+            style: {
+              color: green[700],
+              borderColor: green[200],
+              backgroundColor: alpha(green[50], 0.3),
+              "&:hover": {
+                backgroundColor: green[100],
+                borderColor: green[300],
+              },
+              "&:active": {
+                backgroundColor: green[200],
+              },
+              ...theme.applyStyles("dark", {
+                color: green[300],
+                backgroundColor: alpha(green[900], 0.3),
+                borderColor: green[800],
+                "&:hover": {
+                  backgroundColor: green[900],
+                  borderColor: green[700],
+                },
+                "&:active": {
+                  backgroundColor: green[800],
+                },
+              }),
+            },
+          },
+          {
+            props: {
+              color: "error",
+            },
+            style: {
+              color: red[700],
+              borderColor: red[200],
+              backgroundColor: alpha(red[50], 0.3),
+              "&:hover": {
+                backgroundColor: red[100],
+                borderColor: red[300],
+              },
+              "&:active": {
+                backgroundColor: red[200],
+              },
+              ...theme.applyStyles("dark", {
+                color: red[300],
+                backgroundColor: alpha(red[900], 0.3),
+                borderColor: red[800],
+                "&:hover": {
+                  backgroundColor: red[900],
+                  borderColor: red[700],
+                },
+                "&:active": {
+                  backgroundColor: red[800],
+                },
+              }),
+            },
+          },
+          {
+            props: {
+              color: "warning",
+            },
+            style: {
+              color: orange[700],
+              borderColor: orange[200],
+              backgroundColor: alpha(orange[50], 0.3),
+              "&:hover": {
+                backgroundColor: orange[100],
+                borderColor: orange[300],
+              },
+              "&:active": {
+                backgroundColor: orange[200],
+              },
+              ...theme.applyStyles("dark", {
+                color: orange[300],
+                backgroundColor: alpha(orange[900], 0.3),
+                borderColor: orange[800],
+                "&:hover": {
+                  backgroundColor: orange[900],
+                  borderColor: orange[700],
+                },
+                "&:active": {
+                  backgroundColor: orange[800],
+                },
+              }),
             },
           },
         ],

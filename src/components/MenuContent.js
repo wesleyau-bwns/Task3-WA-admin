@@ -14,15 +14,15 @@ import { ALL_PAGES } from "../constants/pages";
 
 export default function MenuContent() {
   const location = useLocation();
-  const { user } = useAuth();
+  const { admin } = useAuth();
   const logout = useLogout();
 
-  // Filter pages based on user permissions
+  // Filter pages based on admin permissions
   const accessiblePages = ALL_PAGES.filter(
     (page) =>
       !page.allowedPermissions.length || // no permissions required
       page.allowedPermissions.some((permission) =>
-        user?.permissions?.includes(permission)
+        admin?.permissions?.includes(permission)
       )
   );
 

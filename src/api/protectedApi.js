@@ -27,7 +27,7 @@ protectedApi.interceptors.request.use(async (config) => {
 
   let token = getAccessToken();
 
-  if (token && isTokenExpired()) {
+  if (!token || isTokenExpired()) {
     try {
       // console.log("Refreshing access token...");
       const data = await refreshToken();

@@ -3,7 +3,7 @@ import { clearTokens } from "./tokenService";
 import { logoutRequest } from "../api/endpoints/auth";
 
 export const useLogout = () => {
-  const { setUser } = useAuth();
+  const { setAdmin } = useAuth();
 
   const logout = async () => {
     try {
@@ -12,7 +12,7 @@ export const useLogout = () => {
       // Still proceed with local logout
     } finally {
       clearTokens();
-      setUser(null);
+      setAdmin(null);
       window.location.href = `${window.location.origin}/login`;
     }
   };

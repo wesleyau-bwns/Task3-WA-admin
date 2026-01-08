@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Box, Typography, Button, Chip } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { format } from "date-fns";
-import { getUser } from "../../api/endpoints/users";
+import { getUser, deleteUser } from "../../api/endpoints/users";
 
 export default function UserShowPage() {
   const { id } = useParams();
@@ -16,6 +18,12 @@ export default function UserShowPage() {
       .then((res) => setUser(res.data))
       .catch((err) => console.error(err));
   }, [id]);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this user?")) return;
+    await deleteUser(id);
+    navigate("/users");
+  };
 
   if (!user) return <div>Loading...</div>;
 
@@ -47,14 +55,32 @@ export default function UserShowPage() {
         {format(new Date(user.created_at), "yyyy-MM-dd HH:mm")}
       </Typography>
 
-      <Box display="flex" justifyContent="flex-end" mt={3}>
+      <Box display="flex" justifyContent="space-between" mt={2} width="100%">
         <Button
           variant="contained"
           startIcon={<ArrowBackIcon />}
           onClick={() => navigate("/users")}
         >
-          Back to List
+          Cancel
         </Button>
+
+        <Box display="flex" gap={1}>
+          <Button
+            variant="contained"
+            startIcon={<EditIcon />}
+            onClick={() => navigate(`/users/${user.id}/edit`)}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            startIcon={<DeleteIcon />}
+            onClick={() => handleDelete(user.id)}
+          >
+            Delete
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

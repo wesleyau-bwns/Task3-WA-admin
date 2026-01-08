@@ -9,30 +9,30 @@ export default function ProtectedRoute({
   allowedPermissions = [],
   requireAll = false,
 }) {
-  const { user, loading, fetchUser } = useAuth();
+  const { admin, loading, fetchAdmin } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
-    // Attempt to fetch user
-    if (hasAccessToken() && !user && !loading) fetchUser();
-  }, [user, loading, fetchUser]);
+    // Attempt to fetch admin
+    if (hasAccessToken() && !admin && !loading) fetchAdmin();
+  }, [admin, loading, fetchAdmin]);
 
-  // User fetch in progress
+  // Admin fetch in progress
   if (loading) return <LoadingScreen />;
 
-  // User fetch unsuccessful
-  if (!user && !loading) return <Navigate to="/login" replace />;
+  // Admin fetch unsuccessful
+  if (!admin && !loading) return <Navigate to="/login" replace />;
 
   // Check permissions if specified
   if (allowedPermissions.length > 0) {
     const hasPermission = requireAll
-      ? allowedPermissions.every((p) => user.permissions?.includes(p))
-      : allowedPermissions.some((p) => user.permissions?.includes(p));
+      ? allowedPermissions.every((p) => admin.permissions?.includes(p))
+      : allowedPermissions.some((p) => admin.permissions?.includes(p));
 
     if (!hasPermission) {
       console.log("[ProtectedRoute] Unauthorized access:", {
         path: location.pathname,
-        userPermissions: user.permissions,
+        adminPermissions: admin.permissions,
         allowedPermissions,
       });
 
@@ -40,6 +40,6 @@ export default function ProtectedRoute({
     }
   }
 
-  // Render protected content once user is authenticated
+  // Render protected content
   return children;
 }

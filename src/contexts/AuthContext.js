@@ -4,23 +4,38 @@ import { getAuthenticatedAdmin } from "../api/endpoints/auth";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  // Initialize admin from localStorage if available
+  const [admin, internalSetAdmin] = useState(() => {
+    const storedAdmin = localStorage.getItem("admin");
+    return storedAdmin ? JSON.parse(storedAdmin) : null;
+  });
+
   const [loading, setLoading] = useState(false);
 
-  const fetchUser = async () => {
+  // Persist admin across browser refreshes
+  const setAdmin = (newAdmin) => {
+    internalSetAdmin(newAdmin);
+    if (newAdmin) {
+      localStorage.setItem("admin", JSON.stringify(newAdmin));
+    } else {
+      localStorage.removeItem("admin");
+    }
+  };
+
+  const fetchAdmin = async () => {
     setLoading(true);
     try {
       const data = await getAuthenticatedAdmin();
-      setUser(data.admin);
+      setAdmin(data.admin);
     } catch (error) {
-      setUser(null);
+      setAdmin(null);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, fetchUser }}>
+    <AuthContext.Provider value={{ admin, setAdmin, loading, fetchAdmin }}>
       {children}
     </AuthContext.Provider>
   );

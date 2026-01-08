@@ -14,6 +14,7 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 
 import SearchIcon from "@mui/icons-material/Search";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -109,10 +110,17 @@ export default function UserListPage() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 130,
+      width: 200,
       sortable: false,
       renderCell: (params) => (
         <Box display="flex" paddingTop={0.75} gap={1}>
+          <IconButton
+            color="primary"
+            onClick={() => navigate(`/users/${params.row.id}`)}
+          >
+            <VisibilityIcon />
+          </IconButton>
+
           <IconButton
             color="warning"
             onClick={() => navigate(`/users/${params.row.id}/edit`)}

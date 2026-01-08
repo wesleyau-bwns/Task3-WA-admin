@@ -71,7 +71,7 @@ export default function SignIn(props) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
 
-  const { setUser } = useAuth();
+  const { setAdmin } = useAuth();
 
   const validateInputs = () => {
     const email = document.getElementById("email");
@@ -115,7 +115,7 @@ export default function SignIn(props) {
     try {
       const data = await loginRequest({ email, password });
 
-      setUser(data.admin);
+      setAdmin(data.admin);
       navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Invalid credentials");

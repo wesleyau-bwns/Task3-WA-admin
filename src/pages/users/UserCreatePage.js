@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import AddIcon from "@mui/icons-material/Add";
 
 import { createUser } from "../../api/endpoints/users";
 
@@ -80,8 +82,15 @@ export default function UserCreatePage() {
           helperText={errors.password_confirmation?.[0] || errors.password?.[0]}
         />
 
-        <Box display="flex" justifyContent="flex-end" mt={2}>
-          <Button type="submit" variant="contained">
+        <Box display="flex" justifyContent="space-between" mt={2} width="100%">
+          <Button
+            variant="contained"
+            startIcon={<ArrowBackIcon />}
+            onClick={() => navigate("/users")}
+          >
+            Cancel
+          </Button>
+          <Button type="submit" variant="contained" startIcon={<AddIcon />}>
             Create
           </Button>
         </Box>

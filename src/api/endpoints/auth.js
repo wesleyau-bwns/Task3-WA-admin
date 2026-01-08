@@ -27,7 +27,7 @@ export const loginRequest = async ({ email, password }) => {
 };
 
 export const getAuthenticatedAdmin = async () => {
-  return protectedApi.post("/auth/admin");
+  return protectedApi.get("/auth/admin");
 };
 
 export const logoutRequest = async () => {
