@@ -1,7 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen";
-import { hasAccessToken } from "../services/tokenService";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function ProtectedRoute({
@@ -9,30 +8,51 @@ export default function ProtectedRoute({
   allowedPermissions = [],
   requireAll = false,
 }) {
-  const { admin, loading, fetchAdmin } = useAuth();
+  const { admin, permissions, loading, fetchAdmin, fetchPermissions } =
+    useAuth();
+  const [initialized, setInitialized] = useState(false);
   const location = useLocation();
 
+  // Fetch admin profile (name and email)
   useEffect(() => {
-    // Attempt to fetch admin
-    if (hasAccessToken() && !admin && !loading) fetchAdmin();
+    if (!admin && !loading) {
+      fetchAdmin().finally(() => setInitialized(true));
+    } else {
+      setInitialized(true);
+    }
   }, [admin, loading, fetchAdmin]);
 
-  // Admin fetch in progress
-  if (loading) return <LoadingScreen />;
+  // Ensure permissions are loaded ONLY if needed
+  useEffect(() => {
+    if (admin && allowedPermissions.length > 0 && permissions === null) {
+      fetchPermissions();
+    }
+  }, [admin, permissions, allowedPermissions, fetchPermissions]);
 
-  // Admin fetch unsuccessful
-  if (!admin && !loading) return <Navigate to="/login" replace />;
+  // Still loading profile or permissions
+  if (
+    !initialized ||
+    loading ||
+    (allowedPermissions.length > 0 && permissions === null)
+  ) {
+    return null;
+  }
 
-  // Check permissions if specified
+  // Not authenticated
+  if (!admin) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Authorization check (UI-level only)
   if (allowedPermissions.length > 0) {
     const hasPermission = requireAll
-      ? allowedPermissions.every((p) => admin.permissions?.includes(p))
-      : allowedPermissions.some((p) => admin.permissions?.includes(p));
+      ? allowedPermissions.every((p) => permissions.includes(p))
+      : allowedPermissions.some((p) => permissions.includes(p));
 
     if (!hasPermission) {
-      console.log("[ProtectedRoute] Unauthorized access:", {
+      console.log("[ProtectedRoute] Unauthorized access", {
         path: location.pathname,
-        adminPermissions: admin.permissions,
+        permissions,
         allowedPermissions,
       });
 

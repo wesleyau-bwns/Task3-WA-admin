@@ -1,41 +1,47 @@
 import { createContext, useContext, useState } from "react";
-import { getAuthenticatedAdmin } from "../api/endpoints/auth";
+import { getAuthenticatedAdmin, getPermissions } from "../api/endpoints/auth";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Initialize admin from localStorage if available
-  const [admin, internalSetAdmin] = useState(() => {
-    const storedAdmin = localStorage.getItem("admin");
-    return storedAdmin ? JSON.parse(storedAdmin) : null;
-  });
-
+  const [admin, setAdmin] = useState(null);
+  const [permissions, setPermissions] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  // Persist admin across browser refreshes
-  const setAdmin = (newAdmin) => {
-    internalSetAdmin(newAdmin);
-    if (newAdmin) {
-      localStorage.setItem("admin", JSON.stringify(newAdmin));
-    } else {
-      localStorage.removeItem("admin");
-    }
-  };
 
   const fetchAdmin = async () => {
     setLoading(true);
     try {
-      const data = await getAuthenticatedAdmin();
-      setAdmin(data.admin);
-    } catch (error) {
+      const response = await getAuthenticatedAdmin();
+      const admin = response.data.admin || null;
+      setAdmin(admin);
+    } catch {
       setAdmin(null);
     } finally {
       setLoading(false);
     }
   };
 
+  const fetchPermissions = async () => {
+    try {
+      const response = await getPermissions();
+      const perms = response.data.permissions || [];
+      setPermissions(perms);
+    } catch (err) {
+      setPermissions([]);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ admin, setAdmin, loading, fetchAdmin }}>
+    <AuthContext.Provider
+      value={{
+        admin,
+        permissions,
+        loading,
+        setAdmin,
+        fetchAdmin,
+        fetchPermissions,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
